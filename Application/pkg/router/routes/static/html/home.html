@@ -1,0 +1,262 @@
+{{ define "home" }}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link 
+        rel="shortcut icon" 
+        href="/img/favicon.ico"
+    >
+
+    <!-- Bootstrap -->
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+        crossorigin="anonymous"
+    >
+
+    <!-- Custom CSS -->
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/css/base.css"
+    >
+
+    <title>{{ .Title }}</title>
+  </head>
+    <body>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <button type="button" class="navbar-toggler bg-dark" data-toggle="collapse" data-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a class="navbar-brand toplogo"><img src="/img/logo.svg"></a>
+
+            <div class="navbar-collapse collapse justify-content-between" id="nav">
+                <ul class="navbar-nav">
+                    <li>
+                        <a class="nav-link font-weight-bold px-3" id="dashboard" href="/">
+                        <span class="fas fa-chart-line"></span> Dashboard</a>
+                    </li>
+                    <li>
+                        <a class="nav-link font-weight-bold px-3" id="period" data-target="#periodModal" data-toggle="modal" href="#periodModal">
+                        <span class="far fa-hourglass"></span> Period</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Period modal -->
+        <div class="modal fade" id="periodModal" tabindex="-1">
+            <div class="modal-dialog-centered modal-dialog">
+                <div class="modal-content modal-card bg-dark">
+                    <div class="card-title">
+                        <h2>Period</h2>
+                    </div>
+                    <form method="POST" autocomplete="off" action="/time/">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </span>
+                                </div>
+                                <input class="form-control" type="date" id="start" name="start" value="{{ .FormatStartDate }}" min="1990-01-01" max="2100-01-01">
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </span>
+                                </div>
+                                <input class="form-control" type="date" id="end" name="end" value="{{ .FormatEndDate }}" min="1990-01-01" max="2100-01-01">
+                            </div>
+                        </div>
+                        <div class="wrapper modal-wrapper">
+                            <button type="submit" class="btn btn-primary btn-block">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Primary content -->
+
+    	<!-- Cards -->
+		<div class="row dashboard-row-spacing">
+			<div class="col-lg-6 col-md-6 col-sm-12">
+				<a href="/count?type=wr">
+				<div class="card-counter primary">
+					<i class="fas fa-file-invoice-dollar"></i>
+					<span class="count-numbers">{{ .PayableInvoicesCounter }}</span>
+					<span class="count-name">Werkstattrechnungen</span>
+				</div>
+				</a>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12">
+				<a href="/count?type=gr">
+				<div class="card-counter success">
+					<i class="fas fa-file-invoice"></i>
+					<span class="count-numbers">{{ .WarrantyInvoicesCounter }}</span>
+					<span class="count-name">Garantierechnungen</span>
+				</div>
+				</a>
+			</div>
+		</div>
+
+   		<!-- Charts -->
+		<div class="row dashboard-row-spacing">
+			<div class="col-lg-6 col-md-6 col-sm-12">
+				<h4>Werkstattrechnungen -> Hersteller</h4>
+				<div id="first" style="width:100%; height:600px;"></div>
+			</div>
+			<div class="col-lg-6 col-md-6 col-sm-12">
+				<h4>Garantierechnungen -> Hersteller</h4>
+				<div id="second" style="width: 100%;height:600px;"></div>
+			</div>
+		</div>
+
+		<Script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></Script>
+
+		<Script type="text/javascript">
+			var firstChart = echarts.init(document.getElementById('first'), "dark");
+
+			var firstoption = {
+				backgroundColor: '#343a40',
+				tooltip: {
+				trigger: 'item'
+				},
+				series: [
+				{
+					name: 'Access From',
+					type: 'pie',
+					radius: '50%',
+					data: [
+						{{ range $key, $value := .PayableInvoiceCompany }}
+						{ value: {{$value}}, name: '{{$key}}' },
+						{{ end }}
+					],
+					emphasis: {
+					itemStyle: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+					}
+				}
+				]
+			};
+
+			firstoption && firstChart.setOption(firstoption);
+
+			var secondChart = echarts.init(document.getElementById('second'), "dark");
+
+			var secondoption = {
+				backgroundColor: '#343a40',
+				tooltip: {
+				trigger: 'item'
+				},
+				series: [
+				{
+					name: 'Access From',
+					type: 'pie',
+					radius: '50%',
+					data: [
+						{{ range $key, $value := .WarrantyInvoiceCompany }}
+						{ value: {{$value}}, name: '{{$key}}' },
+						{{ end }}
+					],
+					emphasis: {
+					itemStyle: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)',
+					}
+					}
+				}
+				]
+			};
+
+			secondoption && secondChart.setOption(secondoption);
+
+			window.onload = function() {
+				if (window.screen.width < 600) {
+					firstChart.resize({
+						width: document.getElementById("first").width,
+						height: document.getElementById("first").width
+					});
+					secondChart.resize({
+						width: document.getElementById("second").width,
+						height: document.getElementById("second").width
+					});
+				}
+			}
+
+			window.onresize = function() {
+				firstChart.resize();
+				secondChart.resize();
+
+				if (window.screen.width < 600) {
+					firstChart.resize({
+						width: document.getElementById("first").width,
+						height: document.getElementById("first").width
+					});
+					secondChart.resize({
+						width: document.getElementById("second").width,
+						height: document.getElementById("second").width
+					});
+				}
+			};
+
+			firstChart.on('click', function(params) {
+				window.location = "/count/?type=wr&mfr=" + params.name.toLowerCase().trim();
+  				console.log(params.name);
+			});
+
+			secondChart.on('click', function(params) {
+				window.location = "/count/?type=gr&mfr=" + params.name.toLowerCase().trim();
+  				console.log(params.name);
+			});
+		</Script>
+
+        <!-- JQuery -->
+        <script
+                src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+                crossorigin="anonymous">
+
+        </script>
+
+        <!-- Popper -->
+        <script
+                src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous">
+
+        </script>
+
+        <!-- Bootstrap -->
+        <script
+                src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous">
+
+        </script>
+    </body>
+</html>
+{{ end }}

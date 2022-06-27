@@ -1,0 +1,130 @@
+{{ define "count" }}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link 
+        rel="shortcut icon" 
+        href="/img/favicon.ico"
+    >
+
+    <!-- Bootstrap -->
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+        crossorigin="anonymous"
+    >
+
+    <!-- Custom CSS -->
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/css/base.css"
+    >
+
+    <title>{{ .Title }}</title>
+  </head>
+    <body>
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <button type="button" class="navbar-toggler bg-dark" data-toggle="collapse" data-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand toplogo"><img src="/img/logo.svg"></a>
+            <div class="navbar-collapse collapse justify-content-between" id="nav">
+                <ul class="navbar-nav">
+                    <li>
+                        <a class="nav-link font-weight-bold px-3" id="dashboard" href="/">
+                        <span class="fas fa-chart-line"></span> Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Primary content -->
+
+        <!-- Cards -->
+        <div class="row dashboard-row-spacing">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="card-counter danger">
+                    <i class="fas fa-euro-sign"></i>
+                    <span class="count-numbers">{{ .Revenue }}</span>
+                    <span class="count-name">Summe</span>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="card-counter info">
+                    <i class="fas fa-people-carry"></i>
+                    <span class="count-numbers">{{ .Count }}</span>
+                    <span class="count-name">Rechnungen</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table of invoices -->
+        <div class="row dashboard-row-spacing">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-dark text-white table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nummer</th>
+                                <th>Artikel</th>
+                                <th>Summe</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ range .Invoices }}
+                                <tr>
+                                    <td>{{ .ID }}</td>
+                                    <td>{{ .ReferedArticle.Name }}</td>
+                                    <td>{{ .SellPrice }} €</td>
+                                </tr>
+                            {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- JQuery -->
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+        >
+
+        </script>
+
+        <!-- Popper -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"
+        >
+
+        </script>
+
+        <!-- Bootstrap -->
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"
+        >
+
+        </script>
+    </body>
+</html>
+{{ end }}
