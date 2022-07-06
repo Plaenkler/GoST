@@ -27,7 +27,7 @@ Currently, the software creates an empty database that must be filled separately
 
 
 - [Valentin Kaiser](https://github.com/Valentin-Kaiser) provides the go module [go-dbase](https://pkg.go.dev/github.com/Valentin-Kaiser/go-dbase), which allows the import of data directly via STrack.
-- [Waschbaer](https://github.com/daWaschbaer) provided a way to import data and helped me analyze the OMS data structures.
+- [Simon Nils Rach](https://github.com/highqualitywaschbaer) provided a way to import data and helped me analyze the OMS data structures.
 
 ## 📜 Installation guide
 
