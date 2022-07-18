@@ -25,3 +25,6 @@ go.work
 
 # Application config
 config.yaml
+
+# Air config
+.air.toml
