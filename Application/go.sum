@@ -1,5 +1,5 @@
-github.com/Valentin-Kaiser/go-dbase v0.4.0 h1:VX6f8mF0gtOcmmXPZC7IhRGBqo3MnKJRR9HdHCFB49g=
-github.com/Valentin-Kaiser/go-dbase v0.4.0/go.mod h1:jE8DtFZNiSBIGNux87NLbYN8zht76R5OqUa5+aIyKzE=
+github.com/Valentin-Kaiser/go-dbase v1.0.0 h1:GNz8PIX7YajSi+S3cpO2vwsQTBRwPoJMqM0ALLjn9ZY=
+github.com/Valentin-Kaiser/go-dbase v1.0.0/go.mod h1:jE8DtFZNiSBIGNux87NLbYN8zht76R5OqUa5+aIyKzE=
 github.com/jinzhu/inflection v1.0.0 h1:K317FqzuhWc8YvSVlFMCCUb36O/S9MCKRDI7QkRKD/E=
 github.com/jinzhu/inflection v1.0.0/go.mod h1:h+uFLlag+Qp1Va5pdKtLDYj+kHp5pxUVkryuEj+Srlc=
 github.com/jinzhu/now v1.1.4/go.mod h1:d3SSVoowX0Lcu0IBviAWJpolVfI5UJVZZ7cO71lE/z8=
